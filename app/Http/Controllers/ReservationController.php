@@ -8,14 +8,22 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Exceptions\BookNotAvailableException;
 use App\Exceptions\ReservationAlreadyExistsException;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
+    
     public function index()
     {
-        return Reservation::with(['user', 'book'])->get();
+        $userId = Auth::id();
+        
+        $reservations = Reservation::with(['user', 'book'])
+            ->where('user_id', $userId)
+            ->get();
+                                    
+        return view('reservation.index', compact('reservations'));
     }
-
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -80,6 +88,6 @@ class ReservationController extends Controller
         
         $reservation->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('reservation.index')->with('success', 'Reservation deleted successfully');
     }
 }

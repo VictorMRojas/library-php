@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -31,6 +32,12 @@ class BookController extends Controller
     public function show($id)
     {
         return Book::findOrFail($id);
+    }
+
+    public function availableBooks()
+    {
+        $books = Book::where('available', true)->get();
+        return view('dashboard', compact('books'));
     }
 
     public function update(Request $request, $id)
