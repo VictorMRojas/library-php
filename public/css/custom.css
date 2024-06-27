@@ -26,3 +26,32 @@
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+.custom-button {
+    background-color: black;
+    color: white;
+    width: 50%;
+    margin-top: 2rem;
+    border: 2px solid white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-button:hover {
+    background-color: white;
+    color: black;
+}
+
+.floating {
+    animation: floatAnimation 2s ease-in-out infinite;
+}
+
+@keyframes floatAnimation {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
