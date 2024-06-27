@@ -23,6 +23,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
-Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
 
 require __DIR__.'/auth.php';
