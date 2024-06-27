@@ -34,9 +34,27 @@ class BookController extends Controller
         return Book::findOrFail($id);
     }
 
-    public function availableBooks()
+    public function availableBooks(Request $request)
     {
-        $books = Book::where('available', true)->get();
+        $query = $request->input('query');
+
+        $booksQuery = Book::where('available', true);
+
+        if ($query) {
+            $booksQuery->where(function ($q) use ($query) {
+                $q->where('title', 'like', '%' . $query . '%')
+                ->orWhere('author', 'like', '%' . $query . '%')
+                ->orWhere('category', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%');
+            });
+        }
+
+        $books = $booksQuery->get();
+
+        if ($request->ajax()) {
+            return view('partials.book-cards', compact('books'))->render();
+        }
+
         return view('dashboard', compact('books'));
     }
 

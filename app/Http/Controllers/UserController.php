@@ -43,7 +43,15 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
+
+        foreach ($user->reservations as $reservation) {
+            $book = $reservation->book;
+            $book->available = true; // Marcar el libro como disponible
+            $book->save();
+        }
+
+        $user->delete();
 
         return response()->json(null, 204);
     }

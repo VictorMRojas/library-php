@@ -1,45 +1,78 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h1 id="title_text" class="font-semibold text-center text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('¡Descubre nuevas historias!') }}
-        </h2>
+        </h1>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-visible shadow-sm sm:rounded-lg" style="position: relative;">                
+                <label for="searchInput" style="position: absolute;top: -28px;/* left: 10px; */right: 155px;color: white;">Buscador:</label>
+                <input type="text" id="searchInput" placeholder="Título, autor, categoría..." style="position: absolute;right: 0px;top: -32px;font-size: small;padding: 3px;padding-left: 6px;padding-right: 6px;border-radius: 6px;background-color: #111827;color: white;">
+                
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if($books->isEmpty())
-                        <p>No books available at the moment.</p>
-                    @else
-                        <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                @foreach($books as $book)
-                                    <div class="carousel-item @if($loop->first) active @endif">
-                                        <div class="card" style="width: 18rem; margin: auto;">
-                                            <img src="{{ $book->image_url }}" class="card-img-top" alt="{{ $book->title }}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ $book->title }}</h5>
-                                                <h6 class="card-subtitle mb-2 text-muted">{{ $book->author }}</h6>
-                                                <p class="card-text">{{ $book->description }}</p>
-                                                <p class="card-text"><strong>Category: </strong>{{ $book->category }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    @endif
+                    <div id="carouselContainer">
+                        @include('partials.book-cards', ['books' => $books])
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <x-reservation-modal />
+
+    @push('scripts')
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var splide = new Splide('.splide', {
+            perPage: 3,
+            gap: 10,
+            width: "auto",
+            breakpoints: {
+                1120: {
+                    perPage: 2
+                },
+                800: {
+                    perPage: 1
+                }
+            }
+        });
+        splide.mount();
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            var searchText = this.value.toLowerCase();
+
+            fetch(`/available-books?query=${encodeURIComponent(searchText)}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                var carouselContainer = document.getElementById('carouselContainer');
+                carouselContainer.innerHTML = html;
+                var newSplide = new Splide('.splide', {
+                    perPage: 3,
+                    gap: 10,
+                    width: "auto",
+                    breakpoints: {
+                        1120: {
+                            perPage: 2
+                        },
+                        800: {
+                            perPage: 1
+                        }
+                    }
+                });
+                newSplide.mount();
+            })
+            .catch(error => {
+                console.error('Error fetching books:', error);
+            });
+        });
+    });
+    </script>
+    @endpush
 </x-app-layout>

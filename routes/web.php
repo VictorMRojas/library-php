@@ -12,6 +12,8 @@ Route::get('/', function () {
 Route::get('/dashboard', [BookController::class, 'availableBooks'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/available-books', [BookController::class, 'availableBooks'])->name('available-books');    
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -21,5 +23,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
+Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
 
 require __DIR__.'/auth.php';
