@@ -13,6 +13,7 @@ Route::get('/dashboard', [BookController::class, 'availableBooks'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/available-books', [BookController::class, 'availableBooks'])->name('available-books');    
+Route::get('/api/books', [BookController::class, 'getBooks']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

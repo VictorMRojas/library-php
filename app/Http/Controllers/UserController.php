@@ -47,7 +47,7 @@ class UserController extends Controller
 
         foreach ($user->reservations as $reservation) {
             $book = $reservation->book;
-            $book->available = true; // Marcar el libro como disponible
+            $book->available = true;
             $book->save();
         }
 

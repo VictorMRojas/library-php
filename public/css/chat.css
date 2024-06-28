@@ -1,0 +1,53 @@
+.messages {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+.message {
+    margin-bottom: 10px;
+    display: flex;
+}
+.message.sent {
+    justify-content: flex-end;
+}
+.message.received {
+    justify-content: flex-start;
+}
+.message .content {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+}
+.message.sent .content {
+    background-color: #007bff;
+    color: white;
+}
+.message.received .content {
+    background-color: #e9ecef;
+}
+
+.messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.messages::-webkit-scrollbar-button {
+    display: none;
+}
+
+.messages {
+    scrollbar-width: thin;
+    scrollbar-color: #000 transparent;
+}

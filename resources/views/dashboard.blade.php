@@ -20,6 +20,24 @@
         </div>
     </div>
 
+    <div style="display: flex; justify-content: center; margin-top: 40px; margin-bottom: 50px; color: white; font-size: x-large; text-align: center;">
+        <span>¿No encuentras algún libro que te guste?</span>
+        <button 
+        onclick="openChatModal()"
+        style="margin-left: 10px;
+            font-size: medium;
+            padding: 0.1rem 0.8rem;
+            background-color: black; 
+            color: white; border: 2px solid white; 
+            border-radius: 0.5rem; 
+            transition: background-color 0.3s, 
+            color 0.3s;">
+        ¡Preguntale a la IA!
+        </button>
+    </div>
+
+    <x-chat-modal />
+
     <x-reservation-modal />
 
     @push('scripts')

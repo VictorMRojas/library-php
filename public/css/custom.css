@@ -2,6 +2,10 @@
     position: relative;    
 }
 
+body {
+    background-color: #11181F;
+}
+
 .splide {
     visibility: visible;
 }

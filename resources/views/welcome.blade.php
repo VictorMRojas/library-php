@@ -64,7 +64,7 @@
                         <div class="flex flex-col justify-center">
                             <h1 class="text-7xl font-semibold mb-4" style="font-size: 3rem;">¡Descubre nuevas historias!</h1>
                             <p class="text-lg mb-6">Explora nuestro extenso catálogo de libros ahora y encuentra tus próximas lecturas favoritas. ¡Reserva tus libros en línea de manera rápida y sencilla y sumérgete en el maravilloso mundo de la lectura!</p>
-                            <button onclick=`window.location="{{ route('register') }}"` class="custom-button bg-[#FF2D20] text-white py-2 px-6 rounded-lg hover:bg-[#FF3D30] transition duration-300">Reservar ahora</button>
+                            <a href="{{ route('register') }}" class="custom-button bg-[#FF2D20] text-white py-2 px-6 rounded-lg hover:bg-[#FF3D30] transition duration-300" style="text-align: center;">Reservar ahora</a>
                         </div>
                         
                         <div class="flex items-center justify-center">

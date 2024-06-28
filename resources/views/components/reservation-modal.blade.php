@@ -8,7 +8,7 @@
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <div class="flex justify-end p-2">
-                <button type="button" class="text-gray-400 hover:text-gray-500" onclick="closeModal()">
+                <button type="button" class="text-gray-400 hover:text-gray-500" onclick="closeReservationModal()">
                     <span class="sr-only">Cerrar</span>
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -26,7 +26,7 @@
                                 <p class="mt-2 text-sm text-gray-500" id="modalCategory"></p>
                                 <p class="mt-2 text-sm text-gray-500" id="modalDescription"></p>
                             </div>
-                            <div class="sm:w-1/2 sm:flex sm:justify-center sm:items-center">
+                            <div class="sm:flex sm:justify-center sm:items-center" style="width: 50%;">
                                 <img id="modalImage" src="" alt="Portada del libro" class="max-w-full h-auto">
                             </div>
                         </div>
@@ -50,7 +50,7 @@
 
 @push('scripts')
 <script>
-    function openModal(bookId, title, author, category, description, imageUrl) {
+    function openReservationModal(bookId, title, author, category, description, imageUrl) {
         document.getElementById('modalTitle').textContent = title;
         document.getElementById('modalAuthor').textContent = `Autor: ${author}`;
         document.getElementById('modalCategory').textContent = `Categoría: ${category}`;
@@ -60,7 +60,7 @@
         document.getElementById('reservationModal').classList.remove('hidden');
     }
 
-    function closeModal() {
+    function closeReservationModal() {
         document.getElementById('reservationModal').classList.add('hidden');
     }
 </script>

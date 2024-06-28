@@ -34,6 +34,12 @@ class BookController extends Controller
         return Book::findOrFail($id);
     }
 
+    public function getBooks()
+    {
+        $books = Book::all();
+        return response()->json($books);
+    }
+
     public function availableBooks(Request $request)
     {
         $query = $request->input('query');

@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link href="{{ asset('/splide/splide.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/custom.css') }}" rel="stylesheet"> 
+    <link href="{{ asset('/css/chat.css') }}" rel="stylesheet"> 
 
     <!-- Splide JS -->
     <script src="{{ asset('/splide/splide.min.js') }}"></script>
