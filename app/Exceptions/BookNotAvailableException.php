@@ -8,6 +8,6 @@ class BookNotAvailableException extends Exception
 {
     public function render()
     {
-        return response()->json(['error' => 'The book is not available'], 400);
+        return response()->json(['error' => 'El libro no está disponible.'], 409);
     }
 }

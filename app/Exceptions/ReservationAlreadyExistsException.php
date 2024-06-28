@@ -8,6 +8,6 @@ class ReservationAlreadyExistsException extends Exception
 {
     public function render()
     {
-        return response()->json(['error' => 'The reservation already exists'], 400);
+        return response()->json(['error' => 'La reserva ya existe.'], 409);
     }
 }
