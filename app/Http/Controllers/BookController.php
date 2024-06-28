@@ -8,11 +8,22 @@ use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
+    /**
+     * Display a listing of the books.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
     public function index()
     {
         return Book::all();
     }
 
+    /**
+     * Store a newly created book in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -29,17 +40,23 @@ class BookController extends Controller
         return response()->json($book, 201);
     }
 
+    /**
+     * Display the specified book.
+     *
+     * @param  int  $id
+     * @return \App\Models\Book
+     */
     public function show($id)
     {
         return Book::findOrFail($id);
     }
 
-    public function getBooks()
-    {
-        $books = Book::all();
-        return response()->json($books);
-    }
-
+    /**
+     * Retrieve all books, optionally filtered by search query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
+     */
     public function availableBooks(Request $request)
     {
         $query = $request->input('query');
@@ -49,9 +66,9 @@ class BookController extends Controller
         if ($query) {
             $booksQuery->where(function ($q) use ($query) {
                 $q->where('title', 'like', '%' . $query . '%')
-                ->orWhere('author', 'like', '%' . $query . '%')
-                ->orWhere('category', 'like', '%' . $query . '%')
-                ->orWhere('description', 'like', '%' . $query . '%');
+                  ->orWhere('author', 'like', '%' . $query . '%')
+                  ->orWhere('category', 'like', '%' . $query . '%')
+                  ->orWhere('description', 'like', '%' . $query . '%');
             });
         }
 
@@ -64,6 +81,13 @@ class BookController extends Controller
         return view('dashboard', compact('books'));
     }
 
+    /**
+     * Update the specified book in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -81,6 +105,12 @@ class BookController extends Controller
         return response()->json($book, 200);
     }
 
+    /**
+     * Remove the specified book from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($id)
     {
         Book::findOrFail($id)->delete();

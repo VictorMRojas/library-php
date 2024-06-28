@@ -15,7 +15,11 @@ use Illuminate\Validation\ValidationException;
 
 class ReservationController extends Controller
 {
-    
+    /**
+     * Display a listing of the reservations for the authenticated user.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $userId = Auth::id();
@@ -27,6 +31,12 @@ class ReservationController extends Controller
         return view('reservation.index', compact('reservations'));
     }
     
+    /**
+     * Store a newly created reservation.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         try {
@@ -36,10 +46,10 @@ class ReservationController extends Controller
                 'days_reserved' => 'required|integer|min:1',
             ]);
 
-            // Validar días reservados
+            // Validate reserved days
             $daysReserved = $request->input('days_reserved');
             if ($daysReserved <= 0) {
-                return redirect()->back()->withInput()->withErrors(['days_reserved' => 'Los días reservados deben ser mayores a cero.']);
+                return redirect()->back()->withInput()->withErrors(['days_reserved' => 'Reserved days must be greater than zero.']);
             }
 
             // Check if the book is available
@@ -57,7 +67,7 @@ class ReservationController extends Controller
                 throw new ReservationAlreadyExistsException;
             }
 
-            // Crear la reserva
+            // Create the reservation
             Reservation::create([
                 'user_id' => $request->user_id,
                 'book_id' => $request->book_id,
@@ -68,29 +78,41 @@ class ReservationController extends Controller
             $book->available = false;
             $book->save();
 
-            return redirect()->route('reservation.index')->with('success', 'Reserva creada exitosamente');
+            return redirect()->route('reservation.index')->with('success', 'Reservation created successfully');
         } catch (\Exception $e) {
             // Log the exception for debugging
             Log::error($e);
 
             if ($e instanceof ValidationException) {
-                Session::flash('error', 'Debes indicar los dias reservados.');
+                Session::flash('error', 'You must specify the reserved days.');
             }
             
             // Handle the exception based on your application's requirements
             if ($e instanceof BookNotAvailableException || 
                 $e instanceof ReservationAlreadyExistsException) {
-                    Session::flash('error', 'Ya existe una reserva para este libro y usuario.');
+                    Session::flash('error', 'A reservation already exists for this book and user.');
             }
         }
     }
 
-
+    /**
+     * Display the specified reservation.
+     *
+     * @param  int  $id
+     * @return \App\Models\Reservation
+     */
     public function show($id)
     {
         return Reservation::with(['user', 'book'])->findOrFail($id);
     }
 
+    /**
+     * Update the specified reservation in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -103,6 +125,12 @@ class ReservationController extends Controller
         return response()->json($reservation, 200);
     }
 
+    /**
+     * Remove the specified reservation from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($id)
     {
         $reservation = Reservation::findOrFail($id);
